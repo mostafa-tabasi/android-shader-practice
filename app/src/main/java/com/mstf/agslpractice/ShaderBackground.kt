@@ -46,7 +46,7 @@ fun ShaderBackground() {
 
 @Preview(showBackground = true)
 @Composable
-fun GreetingPreview() {
+private fun ShaderBackgroundPreview() {
     AGSLPracticeTheme {
         ShaderBackground()
     }
