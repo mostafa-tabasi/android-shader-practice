@@ -106,7 +106,7 @@ fun ChromaticShader() {
                         this.renderEffect = renderEffect
                     }
                     .fillMaxWidth(0.9f)
-                    .aspectRatio(9 / 16f),
+                    .aspectRatio(9 / 13.4f),
                 painter = painterResource(id = R.drawable.dog),
                 contentDescription = null,
             )
@@ -121,24 +121,6 @@ fun ChromaticShader() {
         }
 
         // Controls (bottom)
-        Column(
-            modifier = Modifier
-                .align(Alignment.TopCenter)
-                .padding(16.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.padding(bottom = 8.dp)
-            ) {
-                Checkbox(
-                    checked = isCircleEnabled,
-                    onCheckedChange = { isCircleEnabled = it }
-                )
-                Text("Enable draggable circle")
-            }
-        }
-
         Column(
             modifier = Modifier
                 .align(Alignment.BottomCenter)
@@ -167,6 +149,17 @@ fun ChromaticShader() {
                     valueRange = 0f..50f,
                     modifier = Modifier.padding(horizontal = 16.dp)
                 )
+            }
+
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.padding(bottom = 8.dp)
+            ) {
+                Checkbox(
+                    checked = isCircleEnabled,
+                    onCheckedChange = { isCircleEnabled = it }
+                )
+                Text("Enable draggable circle")
             }
         }
     }
