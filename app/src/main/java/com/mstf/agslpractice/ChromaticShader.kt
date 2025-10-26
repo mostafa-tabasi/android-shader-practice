@@ -27,12 +27,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.compose.ui.graphics.asComposeRenderEffect
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.mstf.agslpractice.ui.theme.AGSLPracticeTheme
 import org.intellij.lang.annotations.Language
 
@@ -43,7 +47,7 @@ private const val SHADER = """
     uniform float radius;
     uniform float hDisplacement;
     uniform float vDisplacement;
-    uniform float enabled; // 1.0 = circle active, 0.0 = full image
+    uniform float enabled;
 
     half4 main(float2 fragCoord) {
         float dist = distance(fragCoord, center);
@@ -70,6 +74,7 @@ fun ChromaticShader() {
     var vDisplacement by remember { mutableFloatStateOf(0f) }
     var touchPosition by remember { mutableStateOf<Offset?>(null) }
     var isCircleEnabled by remember { mutableStateOf(false) }
+    var isShowingImage by remember { mutableStateOf(false) }
     val radius = 200f
 
     val chromaticShader = remember { RuntimeShader(SHADER) }
@@ -95,21 +100,34 @@ fun ChromaticShader() {
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color.White),
+            .background(Color.Black),
         contentAlignment = Alignment.Center
     ) {
         Box {
-            Image(
-                modifier = Modifier
-                    .graphicsLayer {
-                        clip = true
-                        this.renderEffect = renderEffect
-                    }
-                    .fillMaxWidth(0.9f)
-                    .aspectRatio(9 / 13.4f),
-                painter = painterResource(id = R.drawable.dog),
-                contentDescription = null,
-            )
+            if (!isShowingImage)
+                Text(
+                    text = "CHROMATIC\n\n\nSHADER\n\n\nEFFECT",
+                    color = Color.White,
+                    fontSize = 64.sp,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier
+                        .graphicsLayer {
+                            clip = true
+                            this.renderEffect = renderEffect
+                        }
+                )
+            else
+                Image(
+                    modifier = Modifier
+                        .graphicsLayer {
+                            clip = true
+                            this.renderEffect = renderEffect
+                        }
+                        .fillMaxWidth(0.9f)
+                        .aspectRatio(9 / 13.4f),
+                    painter = painterResource(id = R.drawable.dog),
+                    contentDescription = null,
+                )
 
             // Only show and enable circle when checkbox is checked
             if (isCircleEnabled) {
@@ -130,7 +148,7 @@ fun ChromaticShader() {
             Row(
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Text(text = "Horizontal Displacement")
+                Text(text = "Horizontal Displacement", style = TextStyle(color = White))
                 Slider(
                     value = hDisplacement,
                     onValueChange = { hDisplacement = it },
@@ -142,7 +160,7 @@ fun ChromaticShader() {
             Row(
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Text(text = "Vertical Displacement")
+                Text(text = "Vertical Displacement", style = TextStyle(color = White))
                 Slider(
                     value = vDisplacement,
                     onValueChange = { vDisplacement = it },
@@ -153,13 +171,24 @@ fun ChromaticShader() {
 
             Row(
                 verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.padding(bottom = 8.dp)
+                modifier = Modifier.padding(bottom = 2.dp)
             ) {
                 Checkbox(
                     checked = isCircleEnabled,
                     onCheckedChange = { isCircleEnabled = it }
                 )
-                Text("Enable draggable circle")
+                Text("Enable draggable circle", style = TextStyle(color = White))
+            }
+
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.padding(bottom = 2.dp)
+            ) {
+                Checkbox(
+                    checked = isShowingImage,
+                    onCheckedChange = { isShowingImage = it }
+                )
+                Text("Apply on Image", style = TextStyle(color = White))
             }
         }
     }
@@ -197,7 +226,7 @@ fun DraggableCircle(
         Canvas(modifier = Modifier.fillMaxSize()) {
             touchPosition?.let { position ->
                 drawCircle(
-                    color = Color.Black.copy(alpha = 0.05f),
+                    color = Color.White.copy(alpha = 0.1f),
                     radius = radius,
                     center = position
                 )
