@@ -69,7 +69,7 @@ fun ChromaticShader() {
     var hDisplacement by remember { mutableFloatStateOf(0f) }
     var vDisplacement by remember { mutableFloatStateOf(0f) }
     var touchPosition by remember { mutableStateOf<Offset?>(null) }
-    var isCircleEnabled by remember { mutableStateOf(true) }
+    var isCircleEnabled by remember { mutableStateOf(false) }
     val radius = 200f
 
     val chromaticShader = remember { RuntimeShader(SHADER) }
@@ -123,7 +123,7 @@ fun ChromaticShader() {
         // Controls (bottom)
         Column(
             modifier = Modifier
-                .align(Alignment.BottomCenter)
+                .align(Alignment.TopCenter)
                 .padding(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
@@ -137,7 +137,14 @@ fun ChromaticShader() {
                 )
                 Text("Enable draggable circle")
             }
+        }
 
+        Column(
+            modifier = Modifier
+                .align(Alignment.BottomCenter)
+                .padding(16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
             Row(
                 verticalAlignment = Alignment.CenterVertically
             ) {
