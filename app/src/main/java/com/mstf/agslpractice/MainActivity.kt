@@ -43,6 +43,7 @@ fun ShaderPracticeApp() {
         composable("home") { HomeScreen(navController) }
         composable("shader_background") { ShaderBackground() }
         composable("shader_text") { ShaderText() }
+        composable("chromatic_shader") { ChromaticShader() }
     }
 }
 
@@ -58,6 +59,9 @@ fun HomeScreen(navController: NavController) {
         }
         Button(onClick = { navController.navigate("shader_text") }) {
             Text("Shader Text")
+        }
+        Button(onClick = { navController.navigate("chromatic_shader") }) {
+            Text("Chromatic Shader")
         }
     }
 }
